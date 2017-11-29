@@ -1,0 +1,25 @@
+
+-- Synchronize tenprint, latent events
+INSERT INTO NSYS.NSYS_METADATA_Q (SYNC_QUEUE_ID, SYNC_TYPE, METADATA_ID, METADATA_REF_ID, ALIAS, DATETIME_CREATE) SELECT NSYS.NSYS_METADATA_SYNC_QUEUE_ID.NEXTVAL, 'C', REGISTRATION_ID, REGISTRATION_ID, 'event', SYSDATE FROM UDB.BIO_REGISTRATION WHERE REGISTRATION_TYPE<>'LP';
+
+COMMIT;
+Make sure IESB01 is writing to /home/nec/lucene 
+"Monitor the count on NSYS_METADATA_Q, make sure its reducing, let us know the throughput
+select count(*) from NSYS_METADATA_Q;"
+Execute the below queries
+
+-- Synchronize latent cases
+INSERT INTO NSYS.NSYS_METADATA_Q (SYNC_QUEUE_ID, SYNC_TYPE, METADATA_ID, METADATA_REF_ID, ALIAS, DATETIME_CREATE) SELECT NSYS.NSYS_METADATA_SYNC_QUEUE_ID.NEXTVAL, 'C', CASE_ID, CASE_ID, 'latentCase', SYSDATE FROM UDB.UDB_LATENT_CASE;
+
+COMMIT;
+
+"Monitor the count on NSYS_METADATA_Q, make sure its reducing, let us know the throughput
+select count(*) from NSYS_METADATA_Q;"
+
+-- Synchronize documents
+INSERT INTO NSYS.NSYS_METADATA_Q (SYNC_QUEUE_ID, SYNC_TYPE, METADATA_ID, METADATA_REF_ID, ALIAS, DATETIME_CREATE) SELECT NSYS.NSYS_METADATA_SYNC_QUEUE_ID.NEXTVAL, 'C', DOCUMENT_ID, DOCUMENT_ID, 'document', SYSDATE FROM UDB.BIO_DOCUMENT;
+
+COMMIT;
+
+"Monitor the count on NSYS_METADATA_Q, make sure its reducing, let us know the throughput
+select count(*) from NSYS_METADATA_Q;"
